@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shruti Kharche — Backend Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0e12;
+    --bg2: #13151c;
+    --bg3: #1a1d27;
+    --surface: #1e2130;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #f0ede8;
+    --muted: #7a8099;
+    --accent: #6ee7b7;
+    --accent2: #38bdf8;
+    --accent3: #f472b6;
+    --gold: #fbbf24;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1rem 2.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(13,14,18,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    color: var(--accent);
+    letter-spacing: 0.01em;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 7rem 2.5rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 40%, rgba(110,231,183,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(56,189,248,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: center;
+    width: 100%;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(110,231,183,0.08);
+    border: 0.5px solid rgba(110,231,183,0.25);
+    padding: 4px 14px;
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    line-height: 1.12;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 1rem; color: var(--muted);
+    margin-bottom: 2rem; line-height: 1.8;
+    max-width: 480px;
+  }
+  .hero-sub strong { color: var(--text); font-weight: 500; }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #0d2a1e;
+  }
+  .btn-primary:hover { background: #86efcd; transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 0.5px solid var(--border2);
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+
+  /* HERO STATS CARD */
+  .hero-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border2);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-card::before {
+    content: '';
+    position: absolute; top: -1px; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+  .hero-stats {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .stat {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+  }
+  .stat-number {
+    font-family: var(--serif);
+    font-size: 2rem;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+  .stat-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .tech-stack { margin-top: 0.5rem; }
+  .tech-stack-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.75rem; }
+  .tech-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    font-size: 0.75rem; padding: 4px 12px;
+    border-radius: 100px;
+    border: 0.5px solid var(--border2);
+    color: var(--muted);
+    background: var(--bg2);
+    font-weight: 500;
+  }
+  .pill.accent { border-color: rgba(110,231,183,0.3); color: var(--accent); background: rgba(110,231,183,0.06); }
+  .pill.blue { border-color: rgba(56,189,248,0.3); color: var(--accent2); background: rgba(56,189,248,0.06); }
+
+  /* SECTIONS */
+  section { padding: 5rem 2.5rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  .section-desc { color: var(--muted); max-width: 560px; line-height: 1.8; margin-bottom: 3rem; }
+
+  /* EXPERIENCE */
+  .exp-timeline { position: relative; padding-left: 2rem; }
+  .exp-timeline::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px; background: var(--border2);
+  }
+  .exp-item {
+    position: relative;
+    margin-bottom: 3rem;
+    padding-left: 2rem;
+  }
+  .exp-item::before {
+    content: '';
+    position: absolute; left: -2rem;
+    top: 6px;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 3px rgba(110,231,183,0.2);
+  }
+  .exp-meta {
+    display: flex; flex-wrap: wrap;
+    align-items: center; gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .exp-date {
+    font-size: 0.75rem; color: var(--accent);
+    background: rgba(110,231,183,0.08);
+    border: 0.5px solid rgba(110,231,183,0.2);
+    padding: 2px 10px; border-radius: 100px;
+    font-weight: 500; letter-spacing: 0.03em;
+  }
+  .exp-company { font-size: 0.85rem; color: var(--muted); }
+  .exp-role {
+    font-weight: 600; font-size: 1.1rem;
+    color: var(--text); margin-bottom: 0.25rem;
+  }
+  .exp-client { font-size: 0.8rem; color: var(--accent2); margin-bottom: 0.75rem; }
+  .exp-points { list-style: none; }
+  .exp-points li {
+    font-size: 0.9rem; color: var(--muted);
+    padding: 0.3rem 0;
+    display: flex; gap: 0.6rem;
+    line-height: 1.65;
+  }
+  .exp-points li::before {
+    content: '→';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .exp-impact {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1rem;
+  }
+  .impact-badge {
+    font-size: 0.75rem; font-weight: 600;
+    padding: 3px 12px; border-radius: 100px;
+  }
+  .impact-green { background: rgba(110,231,183,0.12); color: var(--accent); border: 0.5px solid rgba(110,231,183,0.25); }
+  .impact-blue { background: rgba(56,189,248,0.1); color: var(--accent2); border: 0.5px solid rgba(56,189,248,0.2); }
+  .impact-pink { background: rgba(244,114,182,0.1); color: var(--accent3); border: 0.5px solid rgba(244,114,182,0.2); }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+  .project-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .project-card:hover {
+    border-color: var(--border2);
+    transform: translateY(-3px);
+  }
+  .project-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: 0 0 16px 16px;
+  }
+  .project-card.c1::after { background: linear-gradient(90deg, var(--accent), transparent); }
+  .project-card.c2::after { background: linear-gradient(90deg, var(--accent2), transparent); }
+  .project-card.c3::after { background: linear-gradient(90deg, var(--accent3), transparent); }
+  .project-card.c4::after { background: linear-gradient(90deg, var(--gold), transparent); }
+  .project-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.35rem;
+    margin-bottom: 1rem;
+  }
+  .project-title { font-weight: 600; font-size: 1rem; margin-bottom: 0.4rem; }
+  .project-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+  .project-metrics { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1rem; }
+  .metric-row {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.8rem;
+  }
+  .metric-row strong { color: var(--text); font-weight: 600; }
+  .metric-row span { color: var(--muted); }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 0.72rem; padding: 2px 10px; border-radius: 100px;
+    background: var(--bg2); border: 0.5px solid var(--border);
+    color: var(--muted); font-weight: 500;
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
+  .skill-group {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+  }
+  .skill-group-title {
+    font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--accent); font-weight: 600; margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .skill-group-title::after {
+    content: ''; flex: 1;
+    height: 0.5px; background: var(--border);
+  }
+  .skill-list { display: flex; flex-direction: column; gap: 0.5rem; }
+  .skill-item {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.87rem; color: var(--text);
+    padding: 0.3rem 0;
+  }
+  .skill-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-green { background: var(--accent); }
+  .dot-blue { background: var(--accent2); }
+  .dot-pink { background: var(--accent3); }
+  .dot-gold { background: var(--gold); }
+
+  /* CERTS */
+  .certs-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+  .cert-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .cert-icon {
+    font-size: 1.5rem; flex-shrink: 0;
+  }
+  .cert-body {}
+  .cert-name { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.2rem; }
+  .cert-issuer { font-size: 0.75rem; color: var(--muted); }
+
+  /* CONTACT */
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; align-items: center;
+  }
+  .contact-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border2);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative; overflow: hidden;
+  }
+  .contact-card::before {
+    content: '';
+    position: absolute; top: -1px; left: 20%; right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+  }
+  .contact-item {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .contact-item:last-child { border-bottom: none; }
+  .contact-icon {
+    width: 36px; height: 36px;
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0;
+  }
+  .contact-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 2px; }
+  .contact-value { font-size: 0.9rem; font-weight: 500; }
+  .contact-value a { color: var(--text); text-decoration: none; }
+  .contact-value a:hover { color: var(--accent); }
+
+  /* DIVIDER */
+  .divider {
+    max-width: 1100px; margin: 0 auto;
+    border: none; border-top: 0.5px solid var(--border);
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 2.5rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.8rem;
+    border-top: 0.5px solid var(--border);
+  }
+
+  /* ANIMATIONS */
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    animation: fadeUp 0.7s forwards;
+  }
+  .fade-up.d1 { animation-delay: 0.1s; }
+  .fade-up.d2 { animation-delay: 0.25s; }
+  .fade-up.d3 { animation-delay: 0.4s; }
+  .fade-up.d4 { animation-delay: 0.55s; }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; }
+    .nav-links { display: none; }
+    .hero-grid, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero { padding: 6rem 1.25rem 3rem; }
+    section { padding: 3.5rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">SK</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Research & Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:shrutikharche16@gmail.com" class="btn btn-primary" style="padding:0.5rem 1.1rem; font-size:0.82rem;">Hire Me</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="about">
+  <div class="hero-bg"></div>
+  <div class="hero-grid">
+    <div>
+      <div class="hero-eyebrow fade-up d1">Available for opportunities</div>
+      <h1 class="fade-up d2">Shruti<br><em>Kharche</em></h1>
+      <p class="hero-sub fade-up d3">
+        <strong>Backend Engineer</strong> specializing in Java Spring Boot microservices, RESTful APIs, and enterprise automation. Currently building scalable backend systems at <strong>Mphasis</strong> for T-Mobile.
+      </p>
+      <div class="hero-cta fade-up d4">
+        <a href="#experience" class="btn btn-primary">View My Work</a>
+        <a href="mailto:shrutikharche16@gmail.com" class="btn btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+    <div class="fade-up d3">
+      <div class="hero-card">
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-number">2+</div>
+            <div class="stat-label">Years Experience</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">97%</div>
+            <div class="stat-label">Process Time Reduction</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">25%</div>
+            <div class="stat-label">API Failure Reduction</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">8.64</div>
+            <div class="stat-label">CGPA — BTech CS</div>
+          </div>
+        </div>
+        <div class="tech-stack">
+          <div class="tech-stack-label">Core Stack</div>
+          <div class="tech-pills">
+            <span class="pill accent">Java 8+</span>
+            <span class="pill accent">Spring Boot</span>
+            <span class="pill accent">Microservices</span>
+            <span class="pill blue">Apache Kafka</span>
+            <span class="pill blue">Kubernetes</span>
+            <span class="pill blue">AWS</span>
+            <span class="pill">MySQL</span>
+            <span class="pill">Splunk</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-label">Career Journey</div>
+    <h2 class="section-title">Work Experience</h2>
+    <p class="section-desc">From enterprise automation to scalable backend systems — a path built on real impact.</p>
+
+    <div class="exp-timeline">
+
+      <div class="exp-item">
+        <div class="exp-meta">
+          <span class="exp-date">Nov 2024 – Present</span>
+          <span class="exp-company">Mphasis Limited · Pune, MH</span>
+        </div>
+        <div class="exp-role">Software Engineer – Backend Developer</div>
+        <div class="exp-client">Client: T-Mobile (USA)</div>
+        <ul class="exp-points">
+          <li>Designed and developed scalable Java Spring Boot microservices using OO Design Patterns, layered architecture, validation, and global exception handling.</li>
+          <li>Built and integrated RESTful APIs with reusable client utilities, reducing external API failures by 25%.</li>
+          <li>Published and consumed Kafka and Deep IO messages to enable reliable inter-service communication and improve system scalability.</li>
+          <li>Enabled centralized logging and monitoring using Splunk and Splunk Observability Cloud for real-time performance tracking.</li>
+          <li>Implemented asynchronous processing and optimized thread management for improved API performance.</li>
+          <li>Worked within Agile SDLC, supporting CI/CD pipelines and monitoring deployments in containerized cloud environments (Kubernetes/AWS).</li>
+          <li>Led backend technical design discussions, translating business requirements into scalable microservices solutions.</li>
+        </ul>
+        <div class="exp-impact">
+          <span class="impact-badge impact-green">Java Spring Boot</span>
+          <span class="impact-badge impact-blue">Microservices</span>
+          <span class="impact-badge impact-pink">Kafka</span>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-meta">
+          <span class="exp-date">Dec 2023 – Oct 2024</span>
+          <span class="exp-company">Predikly Technologies · Pune, MH</span>
+        </div>
+        <div class="exp-role">Software Developer – RPA & Automation</div>
+        <ul class="exp-points">
+          <li>Automated enterprise data workflows reducing processing time from 2 minutes to 12 seconds per record.</li>
+          <li>Built invoice automation solutions reducing manual effort by 60–70% across 140+ vendors and multiple document formats.</li>
+          <li>Implemented intelligent document processing using IQ Bot and OCR technologies for automated data extraction.</li>
+          <li>Automated billing workflows, reducing invoice processing time by 96–97% using Automation Anywhere A360.</li>
+          <li>Prepared Functional Specification Documents (FSD) and supported UAT demonstrations for stakeholder validation and deployment.</li>
+          <li>Built lead generation automation pulling from Apollo.io with sales filters, generating thousands of qualified leads daily.</li>
+        </ul>
+        <div class="exp-impact">
+          <span class="impact-badge impact-green">Automation Anywhere</span>
+          <span class="impact-badge impact-blue">IQ Bots</span>
+          <span class="impact-badge impact-pink">Python</span>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-meta">
+          <span class="exp-date">Jan 2023 – Feb 2023</span>
+          <span class="exp-company">Capgemini · Mumbai, MH</span>
+        </div>
+        <div class="exp-role">Associate Software Intern</div>
+        <ul class="exp-points">
+          <li>Developed an NLP-based system for sustainability goal identification using Python.</li>
+          <li>Deployed solution using Streamlit and enterprise collaboration tools.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-label">Research & Projects</div>
+    <h2 class="section-title">Key Projects</h2>
+    <p class="section-desc">From published research to enterprise automation — projects that combine AI, engineering, and real-world impact.</p>
+
+    <!-- FEATURED RESEARCH PROJECT -->
+    <div style="margin-bottom: 1.5rem;">
+      <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--gold); font-weight:600; margin-bottom:0.75rem;">📄 Published Research · Final Year Project · MIT ADT University · 2024</div>
+      <div class="project-card c4" style="border-color: rgba(251,191,36,0.25);">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:1rem;">
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div class="project-icon" style="background: rgba(251,191,36,0.12); margin-bottom:0;">🔬</div>
+            <div>
+              <div class="project-title" style="font-size:1.05rem;">Fake Image Detection using Deep Learning</div>
+              <div style="font-size:0.75rem; color:var(--gold); margin-top:2px; font-weight:500;">Published in IJIRT · Volume 10 Issue 11 · ISSN: 2349-6002 · April 2024</div>
+            </div>
+          </div>
+          <span style="font-size:0.72rem; padding:3px 12px; border-radius:100px; background:rgba(251,191,36,0.12); color:var(--gold); border:0.5px solid rgba(251,191,36,0.3); font-weight:600; white-space:nowrap; align-self:flex-start;">Co-authored Paper</span>
+        </div>
+        <div class="project-desc" style="margin-bottom:1rem;">Built an image authenticity verification system using CNNs and GANs to combat fake image proliferation in digital journalism. Designed for real-time analysis with a Streamlit user interface, the system classifies images as authentic or manipulated using a hierarchical CNN architecture trained on Kaggle datasets. Research addressed misinformation challenges faced by journalists and content curators.</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
+          <div style="background:var(--bg2); border:0.5px solid var(--border); border-radius:10px; padding:0.75rem 1rem;">
+            <div style="font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Problem</div>
+            <div style="font-size:0.82rem; color:var(--text);">55% of surveyed users had encountered fake images; only 45% trusted media image authenticity</div>
+          </div>
+          <div style="background:var(--bg2); border:0.5px solid var(--border); border-radius:10px; padding:0.75rem 1rem;">
+            <div style="font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Architecture</div>
+            <div style="font-size:0.82rem; color:var(--text);">CNN with sliding window, batch norm, dropout, max pooling — optimized for real-time detection</div>
+          </div>
+          <div style="background:var(--bg2); border:0.5px solid var(--border); border-radius:10px; padding:0.75rem 1rem;">
+            <div style="font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">ML Model</div>
+            <div style="font-size:0.82rem; color:var(--text);">CNNs + GANs for forgery detection; trained on 1200+ image dataset (80/10/10 split)</div>
+          </div>
+          <div style="background:var(--bg2); border:0.5px solid var(--border); border-radius:10px; padding:0.75rem 1rem;">
+            <div style="font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Outcome</div>
+            <div style="font-size:0.82rem; color:var(--text);">Real-time classification UI; paper published internationally; future scope for video & audio deepfakes</div>
+          </div>
+        </div>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">CNN / GAN</span>
+          <span class="tag">Deep Learning</span>
+          <span class="tag">Streamlit</span>
+          <span class="tag">Image Forensics</span>
+          <span class="tag">Kaggle Dataset</span>
+          <span class="tag">GitHub CI/CD</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner">
+    <div class="section-label">Technical Arsenal</div>
+    <h2 class="section-title">Skills & Technologies</h2>
+    <p class="section-desc">A full-stack of engineering competencies spanning backend systems, automation, data, and cloud.</p>
+
+    <div class="skills-grid">
+
+      <div class="skill-group">
+        <div class="skill-group-title">Backend & Java</div>
+        <div class="skill-list">
+          <div class="skill-item"><span class="skill-dot dot-green"></span>Java 8+</div>
+          <div class="skill-item"><span class="skill-dot dot-green"></span>Spring Boot / Spring MVC</div>
+          <div class="skill-item"><span class="skill-dot dot-green"></span>Spring Data JPA / Hibernate</div>
+          <div class="skill-item"><span class="skill-dot dot-green"></span>RESTful API Development</div>
+          <div class="skill-item"><span class="skill-dot dot-green"></span>Microservices Architecture</div>
+          <div class="skill-item"><span class="skill-dot dot-green"></span>Multithreading & Async Processing</div>
+          <div class="skill-item"><span class="skill-dot dot-green"></span>Design Patterns (OOD)</div>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group-title">Messaging & Cloud</div>
+        <div class="skill-list">
+          <div class="skill-item"><span class="skill-dot dot-blue"></span>Apache Kafka</div>
+          <div class="skill-item"><span class="skill-dot dot-blue"></span>DEEP IO Messaging</div>
+          <div class="skill-item"><span class="skill-dot dot-blue"></span>Kubernetes</div>
+          <div class="skill-item"><span class="skill-dot dot-blue"></span>AWS (Cloud Exposure)</div>
+          <div class="skill-item"><span class="skill-dot dot-blue"></span>CI/CD Pipelines</div>
+          <div class="skill-item"><span class="skill-dot dot-blue"></span>Docker / Containers</div>
+          <div class="skill-item"><span class="skill-dot dot-blue"></span>Splunk & Observability</div>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group-title">Automation & RPA</div>
+        <div class="skill-list">
+          <div class="skill-item"><span class="skill-dot dot-pink"></span>Automation Anywhere A360</div>
+          <div class="skill-item"><span class="skill-dot dot-pink"></span>IQ Bot / OCR Processing</div>
+          <div class="skill-item"><span class="skill-dot dot-pink"></span>Python Scripting</div>
+          <div class="skill-item"><span class="skill-dot dot-pink"></span>Invoice & Billing Automation</div>
+          <div class="skill-item"><span class="skill-dot dot-pink"></span>Email & Report Automation</div>
+          <div class="skill-item"><span class="skill-dot dot-pink"></span>Lead Generation Systems</div>
+          <div class="skill-item"><span class="skill-dot dot-pink"></span>FSD Documentation & UAT</div>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group-title">Data & Tooling</div>
+        <div class="skill-list">
+          <div class="skill-item"><span class="skill-dot dot-gold"></span>MySQL / SQL Server</div>
+          <div class="skill-item"><span class="skill-dot dot-gold"></span>NoSQL Databases</div>
+          <div class="skill-item"><span class="skill-dot dot-gold"></span>SQL Query Optimization</div>
+          <div class="skill-item"><span class="skill-dot dot-gold"></span>JUnit Testing</div>
+          <div class="skill-item"><span class="skill-dot dot-gold"></span>Maven / Git</div>
+          <div class="skill-item"><span class="skill-dot dot-gold"></span>Postman / Jira / IntelliJ</div>
+          <div class="skill-item"><span class="skill-dot dot-gold"></span>Embedded Tomcat</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CERTS -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">Credentials</div>
+    <h2 class="section-title">Certifications</h2>
+    <p class="section-desc" style="margin-bottom:2rem;">Validated expertise across automation, data analytics, and machine learning.</p>
+
+    <div class="certs-grid">
+      <div class="cert-card">
+        <div class="cert-icon">🤖</div>
+        <div class="cert-body">
+          <div class="cert-name">AI Fluency: Framework & Foundations</div>
+          <div class="cert-issuer">Anthropic</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">⚡</div>
+        <div class="cert-body">
+          <div class="cert-name">Claude Code in Action</div>
+          <div class="cert-issuer">Anthropic</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🔧</div>
+        <div class="cert-body">
+          <div class="cert-name">Building with the Claude API</div>
+          <div class="cert-issuer">Anthropic</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">📊</div>
+        <div class="cert-body">
+          <div class="cert-name">Advanced Data Analytics</div>
+          <div class="cert-issuer">Google</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🤖</div>
+        <div class="cert-body">
+          <div class="cert-name">Advanced RPA Professional</div>
+          <div class="cert-issuer">Automation Anywhere Certified</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🗄️</div>
+        <div class="cert-body">
+          <div class="cert-name">Managing Big Data with SQL</div>
+          <div class="cert-issuer">Duke University / Coursera</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🧠</div>
+        <div class="cert-body">
+          <div class="cert-name">Exploratory Data Analysis for ML</div>
+          <div class="cert-issuer">IBM</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">⭐</div>
+        <div class="cert-body">
+          <div class="cert-name">SQL (Advanced)</div>
+          <div class="cert-issuer">HackerRank</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div>
+        <div class="section-label">Let's Connect</div>
+        <h2 class="section-title">Open to New Roles</h2>
+        <p style="color:var(--muted); line-height:1.8; margin-bottom:1.5rem;">
+          I'm actively exploring backend engineering and Java microservices opportunities. Whether you're building distributed systems, need automation expertise, or want a developer who understands enterprise workflows — let's talk.
+        </p>
+        <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+          <a href="mailto:shrutikharche16@gmail.com" class="btn btn-primary">Send an Email</a>
+          <a href="https://linkedin.com/in/shruti-kharche-0991351b7" target="_blank" class="btn btn-ghost">LinkedIn Profile</a>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-value"><a href="mailto:shrutikharche16@gmail.com">shrutikharche16@gmail.com</a></div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-label">Phone</div>
+            <div class="contact-value">+91 7387783905</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">Location</div>
+            <div class="contact-value">Pune, Maharashtra, India</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">💼</div>
+          <div>
+            <div class="contact-label">LinkedIn</div>
+            <div class="contact-value"><a href="https://linkedin.com/in/shruti-kharche-0991351b7" target="_blank">linkedin.com/in/shruti-kharche-0991351b7</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Designed & built for Shruti Kharche · Backend Engineer · 2025</p>
+</footer>
+
+</body>
+</html>
